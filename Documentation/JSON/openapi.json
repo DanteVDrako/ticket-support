@@ -1,0 +1,1204 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "TicketSupportAPI",
+    "description" : "Conjunto de endpoints que permitiran a usuarios de tipo cliente generar ordenes de servicio para solicitud de servicios para instalación de soportes de TV. Además los usuatios de tipo Tech podran dar seguimiento a las ordenes, editarlas o cerrarlas. Por ultimo los usuarios de tipo admin podrán crear usuarios que usen el sistema y definir su tipo, además de editarlos, consultarlos o eliminarlos. Esta API está construida usando Node JS, Express(para establecer el servidor), Sequelize (ORM para conexión con una base de Datos Postgress) y JSON Web Tokens (para aplicar autenticacion a los diferentes endpoints). El Script de la Base de datos está en el repositorio de toda la aplicación, el cual se encuentra en: https://github.com/DanteVDrako/ticket-support.git y su despliegue se realizo con los servicios de Heroku Postgress. El despliegue de la aplicación Node JS tambien esta hecha en Heroku bajo el enlace https://ticket-support-api-rest.herokuapp.com/",
+    "contact" : {
+      "name" : "Andrés Sierra Laverde",
+      "url" : "https://www.linkedin.com/in/andres-sierra-laverde",
+      "email" : "dante.andres.swei@gmail.com"
+    },
+    "version" : "1.0"
+  },
+  "servers" : [ {
+    "url" : "https://virtserver.swaggerhub.com/AndresSierra/TicketSupportAPI/1.0",
+    "description" : "SwaggerHub API Auto Mocking"
+  }, {
+    "url" : "http://localhost:8080/api/v1/",
+    "description" : "El PATH base de cada endpoint cuando se trabaja localmente"
+  }, {
+    "url" : "https://ticket-support-api-rest.herokuapp.com/api/v1",
+    "description" : "El PATH generado después del despliegue en Heroku"
+  } ],
+  "paths" : {
+    "/login" : {
+      "post" : {
+        "description" : "Permite hacer un inicio de sesión en el sistema y generar el token del usuario",
+        "parameters" : [ {
+          "name" : "email_user",
+          "in" : "path",
+          "description" : "Correo eléctronico del usuario",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "user1@myapp.com"
+          }
+        }, {
+          "name" : "pass_user",
+          "in" : "path",
+          "description" : "Contraseña del usuario.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "123asd"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Inicio de sesión exitoso",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_200"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Datos de sesión erroneos.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_400"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/profile" : {
+      "get" : {
+        "description" : "Retorna toda la información del usuario que inicio sesión.",
+        "responses" : {
+          "200" : {
+            "description" : "Muestra el usuario que inicio sesión.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_200_1"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "La API falló",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_400_1"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "No existe token de inicio de sesión",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_401"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/all_user" : {
+      "get" : {
+        "description" : "Retorna todos los usuarios almacenados en la base de datos.",
+        "responses" : {
+          "200" : {
+            "description" : "Mostrar usuarios en formato JSON.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_200_2"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "La API falló",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_400_1"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "No existe token de inicio de sesión",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_401_1"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create_user" : {
+      "post" : {
+        "description" : "Permite insertar un nuevo usuario en la base de datos.",
+        "parameters" : [ {
+          "name" : "name_user",
+          "in" : "path",
+          "description" : "Nombre del usuario",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "user1"
+          }
+        }, {
+          "name" : "email_user",
+          "in" : "path",
+          "description" : "Correo eléctronico del usuario",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "user1@myapp.com"
+          }
+        }, {
+          "name" : "pass_user",
+          "in" : "path",
+          "description" : "Contraseña del usuario.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "123asd"
+          }
+        }, {
+          "name" : "type_user",
+          "in" : "path",
+          "description" : "Tipo de usuario, puede ser admin, tech o client",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "tech"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Se creo el usuario en la base de datos",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_200_3"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "La API falló",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_400_1"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "No existe token de inicio de sesión",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_401_1"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get_user" : {
+      "get" : {
+        "description" : "Retorna un solo usuario de la base de datos usando un id.",
+        "parameters" : [ {
+          "name" : "iduser",
+          "in" : "query",
+          "description" : "Identificador unico del usuario asignado en la base de datos",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "number",
+            "example" : 1
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Retornó un usuario.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_200_4"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "La API falló",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_400_1"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "No existe token de inicio de sesión",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_401_1"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete_user" : {
+      "delete" : {
+        "description" : "Elimina un usuario de la base de datos usando un id.",
+        "parameters" : [ {
+          "name" : "iduser",
+          "in" : "query",
+          "description" : "Identificador unico del usuario asignado en la base de datos",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "number",
+            "example" : 1
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Se eliminó el usuario especificado.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_200_5"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "La API falló",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_400_1"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "No existe token de inicio de sesión",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_401_1"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/update_user" : {
+      "put" : {
+        "description" : "Actualiza la información de un usuario de la base de datos usando un id.",
+        "parameters" : [ {
+          "name" : "iduser",
+          "in" : "query",
+          "description" : "Identificador unico del usuario asignado en la base de datos",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "number",
+            "example" : 1
+          }
+        }, {
+          "name" : "name_user",
+          "in" : "path",
+          "description" : "Nombre del usuario",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "user1"
+          }
+        }, {
+          "name" : "email_user",
+          "in" : "path",
+          "description" : "Correo eléctronico del usuario",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "user1@myapp.com"
+          }
+        }, {
+          "name" : "pass_user",
+          "in" : "path",
+          "description" : "Contraseña del usuario.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "123asd"
+          }
+        }, {
+          "name" : "state_user",
+          "in" : "path",
+          "description" : "Si el usuario esta activo o no",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "boolean",
+            "example" : true
+          }
+        }, {
+          "name" : "type_user",
+          "in" : "path",
+          "description" : "Tipo de usuario, puede ser admin, tech o client",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "tech"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Se actualizó el usuario especificado.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_200_6"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "La API falló",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_400_1"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "No existe token de inicio de sesión",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_401_1"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/all_tickets" : {
+      "get" : {
+        "description" : "Retorna todos los tickets almacenados en la base de datos.",
+        "responses" : {
+          "200" : {
+            "description" : "Mostrar los tickets en formato JSON.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_200_7"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "La API falló",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_400_1"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "No existe token de inicio de sesión",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_401_1"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create_ticket" : {
+      "post" : {
+        "description" : "Permite registrar un nuevo ticket en la base de datos.",
+        "parameters" : [ {
+          "name" : "id_user",
+          "in" : "path",
+          "description" : "Nombre del usuario que generó el ticket",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "user1"
+          }
+        }, {
+          "name" : "ticket_desc",
+          "in" : "path",
+          "description" : "Descripción de la apertura del ticket.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "Se necesita un nuevo soporte pata la TV"
+          }
+        }, {
+          "name" : "created_at",
+          "in" : "path",
+          "description" : "Fecha de creación.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "format" : "date",
+            "example" : "2020-06-10"
+          }
+        }, {
+          "name" : "time_duration",
+          "in" : "path",
+          "description" : "Duración del ticket en minutos.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "number",
+            "example" : 300
+          }
+        }, {
+          "name" : "closed_at",
+          "in" : "path",
+          "description" : "Fecha de cierre.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "number",
+            "format" : "date"
+          }
+        }, {
+          "name" : "state_ticket",
+          "in" : "path",
+          "description" : "El estado del ticket, valor por defecto false.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "boolean",
+            "example" : false
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Se creo el usuario en la base de datos",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_200_8"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "La API falló",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_400_1"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "No existe token de inicio de sesión",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_401_1"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ticketsByUser" : {
+      "get" : {
+        "description" : "Retorna todos los tickets de la base de datos asignados a un tecnico.",
+        "parameters" : [ {
+          "name" : "iduser",
+          "in" : "query",
+          "description" : "Identificador unico del tecnico asignado en la base de datos",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "number",
+            "example" : 1
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Retorna los tickets del usuario especificado.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_200_9"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "El id solicitado no tiene tickets asignados",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_400_2"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "No existe token de inicio de sesión",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_401_1"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/one_ticket" : {
+      "get" : {
+        "description" : "Retorna un solo ticket de la base de datos usando un id.",
+        "parameters" : [ {
+          "name" : "idticket",
+          "in" : "query",
+          "description" : "Identificador unico del ticket asignado en la base de datos",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "number",
+            "example" : 1
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Retornó un ticket.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_200_10"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "La API falló",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_400_1"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "No existe token de inicio de sesión",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_401_1"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/delete_ticket" : {
+      "delete" : {
+        "description" : "Elimina un ticket de la base de datos usando un id.",
+        "parameters" : [ {
+          "name" : "idticket",
+          "in" : "query",
+          "description" : "Identificador unico del ticket asignado en la base de datos",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "number",
+            "example" : 1
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Se eliminó el ticket especificado.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_200_11"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "La API falló",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_400_1"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "No existe token de inicio de sesión",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_401_1"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/update_ticket" : {
+      "put" : {
+        "description" : "Actualiza la información de un ticket de la base de datos usando un id.",
+        "parameters" : [ {
+          "name" : "idticket",
+          "in" : "query",
+          "description" : "Identificador unico del ticket asignado en la base de datos",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "number",
+            "example" : 1
+          }
+        }, {
+          "name" : "id_user",
+          "in" : "path",
+          "description" : "Nombre del usuario que generó el ticket",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "user1"
+          }
+        }, {
+          "name" : "ticket_desc",
+          "in" : "path",
+          "description" : "Descripción de la apertura del ticket.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "Se necesita un nuevo soporte pata la TV"
+          }
+        }, {
+          "name" : "created_at",
+          "in" : "path",
+          "description" : "Fecha de creación.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "format" : "date",
+            "example" : "2020-06-10"
+          }
+        }, {
+          "name" : "time_duration",
+          "in" : "path",
+          "description" : "Duración del ticket en minutos.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "number",
+            "example" : 300
+          }
+        }, {
+          "name" : "closed_at",
+          "in" : "path",
+          "description" : "Fecha de cierre.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "number",
+            "format" : "date"
+          }
+        }, {
+          "name" : "state_ticket",
+          "in" : "path",
+          "description" : "El estado del ticket, valor por defecto false.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "boolean",
+            "example" : false
+          }
+        }, {
+          "name" : "assigned_to",
+          "in" : "path",
+          "description" : "Identificador del técnico al cual fue asignado el ticket.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "4"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Se actualizó el ticket especificado.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_200_12"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "La API falló",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_400_1"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "No existe token de inicio de sesión",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_401_1"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "inline_response_200" : {
+        "properties" : {
+          "auth" : {
+            "type" : "boolean",
+            "example" : true
+          },
+          "message" : {
+            "type" : "string",
+            "example" : "The user now is in our system!"
+          },
+          "token" : {
+            "type" : "string",
+            "example" : "a68a98a87lkfdhd.1345335454"
+          }
+        }
+      },
+      "inline_response_400" : {
+        "properties" : {
+          "auth" : {
+            "type" : "boolean",
+            "example" : false
+          },
+          "message" : {
+            "type" : "string",
+            "example" : "The username or password are wrong!"
+          }
+        }
+      },
+      "inline_response_200_1" : {
+        "properties" : {
+          "auth" : {
+            "type" : "boolean",
+            "example" : true
+          },
+          "message" : {
+            "type" : "string",
+            "example" : "The User logged in the system is..."
+          },
+          "data" : {
+            "type" : "array",
+            "example" : {
+              "id_user" : 1,
+              "name_user" : "admin",
+              "email_user" : "admin@myapp.com",
+              "pass_user" : "Abc123",
+              "state_user" : true,
+              "token" : "eyJhbGciOiJIUzI1NiIsIn...",
+              "type_user" : "admin"
+            }
+          }
+        }
+      },
+      "inline_response_400_1" : {
+        "properties" : {
+          "message" : {
+            "type" : "array",
+            "example" : "Something failed: APP Error"
+          }
+        }
+      },
+      "inline_response_401" : {
+        "properties" : {
+          "auth" : {
+            "type" : "boolean",
+            "example" : false
+          },
+          "message" : {
+            "type" : "string",
+            "example" : "The user is not logged in to execute this action!"
+          }
+        }
+      },
+      "inline_response_200_2" : {
+        "properties" : {
+          "auth" : {
+            "type" : "boolean",
+            "example" : true
+          },
+          "message" : {
+            "type" : "string",
+            "example" : "Now take your results!"
+          },
+          "data" : {
+            "type" : "array",
+            "example" : {
+              "user1" : "data",
+              "user2" : "data"
+            }
+          }
+        }
+      },
+      "inline_response_401_1" : {
+        "properties" : {
+          "auth" : {
+            "type" : "boolean",
+            "example" : false
+          },
+          "message" : {
+            "type" : "string",
+            "example" : "You don't have permission for this action!"
+          }
+        }
+      },
+      "inline_response_200_3" : {
+        "properties" : {
+          "message" : {
+            "type" : "string",
+            "example" : "Your user was created!"
+          },
+          "data" : {
+            "type" : "array",
+            "example" : {
+              "user1" : "data"
+            }
+          }
+        }
+      },
+      "inline_response_200_4" : {
+        "properties" : {
+          "message" : {
+            "type" : "string",
+            "example" : "The User you find is: "
+          },
+          "data" : {
+            "type" : "array",
+            "example" : {
+              "user1" : "data"
+            }
+          }
+        }
+      },
+      "inline_response_200_5" : {
+        "properties" : {
+          "message" : {
+            "type" : "string",
+            "example" : "The User was deleted!"
+          }
+        }
+      },
+      "inline_response_200_6" : {
+        "properties" : {
+          "message" : {
+            "type" : "string",
+            "example" : "The User was updated!"
+          }
+        }
+      },
+      "inline_response_200_7" : {
+        "properties" : {
+          "auth" : {
+            "type" : "boolean",
+            "example" : true
+          },
+          "message" : {
+            "type" : "string",
+            "example" : "Now take your results!"
+          },
+          "data" : {
+            "type" : "array",
+            "example" : {
+              "ticket1" : "data",
+              "ticket2" : "data"
+            }
+          }
+        }
+      },
+      "inline_response_200_8" : {
+        "properties" : {
+          "message" : {
+            "type" : "string",
+            "example" : "Your ticket was created!"
+          },
+          "data" : {
+            "type" : "array",
+            "example" : {
+              "ticket1" : "data"
+            }
+          }
+        }
+      },
+      "inline_response_200_9" : {
+        "properties" : {
+          "message" : {
+            "type" : "string",
+            "example" : "Get list of tickets..."
+          },
+          "data" : {
+            "type" : "array",
+            "example" : {
+              "ticket1" : {
+                "id_user" : 1
+              },
+              "ticket2" : {
+                "id_user" : 1
+              }
+            }
+          }
+        }
+      },
+      "inline_response_400_2" : {
+        "properties" : {
+          "message" : {
+            "type" : "array",
+            "example" : "The user hasn't tickets assigned to!"
+          }
+        }
+      },
+      "inline_response_200_10" : {
+        "properties" : {
+          "message" : {
+            "type" : "string",
+            "example" : "The Ticket was found"
+          },
+          "data" : {
+            "type" : "array",
+            "example" : {
+              "ticket1" : "data"
+            }
+          }
+        }
+      },
+      "inline_response_200_11" : {
+        "properties" : {
+          "message" : {
+            "type" : "string",
+            "example" : "Ticket deleted!"
+          }
+        }
+      },
+      "inline_response_200_12" : {
+        "properties" : {
+          "message" : {
+            "type" : "string",
+            "example" : "The ticket was edited!"
+          }
+        }
+      }
+    }
+  }
+}

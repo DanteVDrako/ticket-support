@@ -23,37 +23,37 @@ module.exports = {
                         id_user:verifyUser.id_user
                     }
                 }); 
-                res.json({
+                res.status(200).json({
                     auth:true,
                     message:"The user now is in our system!",
                     token: token
                 });
             }else{
-                res.json({
+                res.status(400).json({
                     auth:false,
                     message:"The username or password are wrong!"
                 });
             }    
         }catch(err){
-            res.json({message:"Something failed: "+err.message});
+            res.status(400).json({message:"Something failed: "+err.message});
         }
     },
     async profile(req, res){
         try{
             if(req.userToken){
-                res.json({ 
+                res.status(200).json({ 
                     auth:true,
                     message:"The User logged in the system is...",
                     data:req.userToken
                 });
             }else{
-                res.json({
+                res.status(401).json({
                     auth:false, 
                     message:"The user is not logged in!"
                 });
             }
         }catch(err){
-            res.json({message:"Something failed: "+err.message});
+            res.status(400).json({message:"Something failed: "+err.message});
         }
     },
     async validateToken(req, res, next){
@@ -74,13 +74,13 @@ module.exports = {
                     req.userToken = userToken;
                     next();
                 }else{
-                    res.json({
+                    res.status(403).json({
                         message:"User don't exist to execute this action!"
                     });
                 }
             }    
         }catch(err){
-            res.json({message:"Something failed: "+err.message});
+            res.status(400).json({message:"Something failed: "+err.message});
             next(err);
         }
     }

@@ -15,19 +15,19 @@ module.exports = {
                     fields: ['name_user','email_user','pass_user','state_user','type_user']
                 });
                 if(newUser){
-                    res.json({
+                    res.status(200).json({
                         message:"Your user was created!",
                         data: newUser
                     });
                 }
             }else{
-                res.json({
+                res.status(401).json({
                     auth:false,
                     message:"You don't have permission for this action!"
                 });
             }
         }catch(err){
-            res.json({message:"Something failed: "+err.message});
+            res.status(400).json({message:"Something failed: "+err.message});
         }
     },
     async getAllUsers(req, res){
@@ -35,14 +35,19 @@ module.exports = {
             if(req.userToken && (req.userToken.type_user=='admin' || req.userToken.type_user=='tech')){
                 const listUsers = await User.findAll();
                 if(listUsers){
-                    res.json({
+                    res.status(200).json({
                         message:"Now take your results!",
                         data: listUsers
                     }); 
                 }
+            }else{
+                res.status(401).json({
+                    auth:false,
+                    message:"You don't have permission for this action!"
+                });
             }
         }catch(err){
-            res.json({message:"Something failed: "+err.message});
+            res.status(400).json({message:"Something failed: "+err.message});
         }
     },
     async getOneUser(req, res){
@@ -55,19 +60,19 @@ module.exports = {
                     }
                 });
                 if(findedUser){
-                    res.json({
+                    res.status(200).json({
                         message:"The User you find is: ",
                         data:findedUser
                     });
                 }
             }else{
-                res.json({
+                res.status(401).json({
                     auth:false,
                     message:"You don't have permission for this action!"
                 })
             }
         }catch(err){
-            res.json({message:"Something failed: "+err.message});
+            res.status(400).json({message:"Something failed: "+err.message});
         }
     },
     async deleteUser(req, res){
@@ -79,15 +84,15 @@ module.exports = {
                         id_user:iduser
                     }
                 });
-                res.json({message:"The User was deleted!"});
+                res.status(200).json({message:"The User was deleted!"});
             }else{
-                res.json({
+                res.status(401).json({
                     auth:false,
                     message:"You don't have permission for this action!"
                 });
             }
         }catch(err){
-            res.json({message:"Something failed: "+err.message});
+            res.status(400).json({message:"Something failed: "+err.message});
         }
     },
     async updateUser(req, res){
@@ -111,15 +116,15 @@ module.exports = {
                     id_user:iduser
                     }
                 });
-                res.json({ message:"The User was updated!" });
+                res.status(200).json({ message:"The User was updated!" });
             }else{
-                res.json({
+                res.status(401).json({
                     auth:false,
                     message:"You don't have permission for this action!"
                 });
             }
         }catch(err){
-            res.json({message:"Something failed: "+err.message});
+            res.status(400).json({message:"Something failed: "+err.message});
         }
     }
 }

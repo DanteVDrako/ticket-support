@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS tickets(
     created_at date,
     time_duration integer,
     closed_at date,
-    state_ticket boolean
+    state_ticket boolean,
+    assigned_to text
 );
 
 INSERT INTO users (name_user, email_user, pass_user, state_user) 
@@ -30,14 +31,14 @@ INSERT INTO users (name_user, email_user, pass_user, state_user)
 INSERT INTO users (name_user, email_user, pass_user, state_user) 
             VALUES ('user3','user3@myapp.com','4ser3',TRUE,NULL,'client'); 
 
-INSERT INTO tickets (id_user, ticket_desc, created_at, time_duration, closed_at, state_ticket)
-            VALUES ('2','Nueva instalación de soporte de TV LED 55.','2020-05-30','300',NULL,false);
+INSERT INTO tickets (id_user, ticket_desc, created_at, time_duration, closed_at, state_ticket, assigned_to)
+            VALUES ('2','Nueva instalación de soporte de TV LED 55.','2020-05-30','300',NULL,false,'user1');
 
-INSERT INTO tickets (id_user, ticket_desc, created_at, time_duration, closed_at, state_ticket)
-            VALUES ('2','Cambio de soporte de TV QLED 75 por daño.','2020-06-05 12:02','300','2020-06-05 14:34',true);
+INSERT INTO tickets (id_user, ticket_desc, created_at, time_duration, closed_at, state_ticket, assigned_to)
+            VALUES ('2','Cambio de soporte de TV QLED 75 por daño.','2020-06-05 12:02','300','2020-06-05 14:34',true,'user2');
 
-INSERT INTO tickets (id_user, ticket_desc, created_at, time_duration, closed_at, state_ticket)
-            VALUES ('3','Renovar soporte de TV LED','2020-06-01 10:27','120','2020-06-01 11:53',true);
+INSERT INTO tickets (id_user, ticket_desc, created_at, time_duration, closed_at, state_ticket,assigned_to)
+            VALUES ('3','Renovar soporte de TV LED','2020-06-01 10:27','120','2020-06-01 11:53',true,'user1');
 
-INSERT INTO tickets (id_user, ticket_desc, created_at, time_duration, closed_at, state_ticket)
-            VALUES ('4','Falta un soporte de TV','2020-06-05 16:31','600',NULL,false);
+INSERT INTO tickets (id_user, ticket_desc, created_at, time_duration, closed_at, state_ticket,assigned_to)
+            VALUES ('4','Falta un soporte de TV','2020-06-05 16:31','600',NULL,false,'user2');

@@ -1,0 +1,1220 @@
+<!doctype html>
+<html>
+  <head>
+    <title>TicketSupportAPI</title>
+    <style type="text/css">
+      body {
+      	font-family: Trebuchet MS, sans-serif;
+      	font-size: 15px;
+      	color: #444;
+      	margin-right: 24px;
+      }
+      
+      h1	{
+      	font-size: 25px;
+      }
+      h2	{
+      	font-size: 20px;
+      }
+      h3	{
+      	font-size: 16px;
+      	font-weight: bold;
+      }
+      hr	{
+      	height: 1px;
+      	border: 0;
+      	color: #ddd;
+      	background-color: #ddd;
+      }
+      
+      .app-desc {
+        clear: both;
+        margin-left: 20px;
+      }
+      .param-name {
+        width: 100%;
+      }
+      .license-info {
+        margin-left: 20px;
+      }
+      
+      .license-url {
+        margin-left: 20px;
+      }
+      
+      .model {
+        margin: 0 0 0px 20px;
+      }
+      
+      .method {
+        margin-left: 20px;
+      }
+      
+      .method-notes	{
+      	margin: 10px 0 20px 0;
+      	font-size: 90%;
+      	color: #555;
+      }
+      
+      pre {
+        padding: 10px;
+        margin-bottom: 2px;
+      }
+      
+      .http-method {
+       text-transform: uppercase;
+      }
+      
+      pre.get {
+        background-color: #0f6ab4;
+      }
+      
+      pre.post {
+        background-color: #10a54a;
+      }
+      
+      pre.put {
+        background-color: #c5862b;
+      }
+      
+      pre.delete {
+        background-color: #a41e22;
+      }
+      
+      .huge	{
+      	color: #fff;
+      }
+      
+      pre.example {
+        background-color: #f3f3f3;
+        padding: 10px;
+        border: 1px solid #ddd;
+      }
+      
+      code {
+        white-space: pre;
+      }
+      
+      .nickname {
+        font-weight: bold;
+      }
+      
+      .method-path {
+        font-size: 1.5em;
+        background-color: #0f6ab4;
+      }
+      
+      .up {
+        float:right;
+      }
+      
+      .parameter {
+        width: 500px;
+      }
+      
+      .param {
+        width: 500px;
+        padding: 10px 0 0 20px;
+        font-weight: bold;
+      }
+      
+      .param-desc {
+        width: 700px;
+        padding: 0 0 0 20px;
+        color: #777;
+      }
+      
+      .param-type {
+        font-style: italic;
+      }
+      
+      .param-enum-header {
+      width: 700px;
+      padding: 0 0 0 60px;
+      color: #777;
+      font-weight: bold;
+      }
+      
+      .param-enum {
+      width: 700px;
+      padding: 0 0 0 80px;
+      color: #777;
+      font-style: italic;
+      }
+      
+      .field-label {
+        padding: 0;
+        margin: 0;
+        clear: both;
+      }
+      
+      .field-items	{
+      	padding: 0 0 15px 0;
+      	margin-bottom: 15px;
+      }
+      
+      .return-type {
+        clear: both;
+        padding-bottom: 10px;
+      }
+      
+      .param-header {
+        font-weight: bold;
+      }
+      
+      .method-tags {
+        text-align: right;
+      }
+      
+      .method-tag {
+        background: none repeat scroll 0% 0% #24A600;
+        border-radius: 3px;
+        padding: 2px 10px;
+        margin: 2px;
+        color: #FFF;
+        display: inline-block;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+  <h1>TicketSupportAPI</h1>
+    <div class="app-desc">Conjunto de endpoints que permitiran a usuarios de tipo cliente generar ordenes de servicio para solicitud de servicios para instalación de soportes de TV. Además los usuatios de tipo Tech podran dar seguimiento a las ordenes, editarlas o cerrarlas. Por ultimo los usuarios de tipo admin podrán crear usuarios que usen el sistema y definir su tipo, además de editarlos, consultarlos o eliminarlos. Esta API está construida usando Node JS, Express(para establecer el servidor), Sequelize (ORM para conexión con una base de Datos Postgress) y JSON Web Tokens (para aplicar autenticacion a los diferentes endpoints). El Script de la Base de datos está en el repositorio de toda la aplicación, el cual se encuentra en: https://github.com/DanteVDrako/ticket-support.git y su despliegue se realizo con los servicios de Heroku Postgress. El despliegue de la aplicación Node JS tambien esta hecha en Heroku bajo el enlace https://ticket-support-api-rest.herokuapp.com/</div>
+    <div class="app-desc">More information: <a href="https://www.linkedin.com/in/andres-sierra-laverde">https://www.linkedin.com/in/andres-sierra-laverde</a></div>
+    <div class="app-desc">Contact Info: <a href="dante.andres.swei@gmail.com">dante.andres.swei@gmail.com</a></div>
+    <div class="app-desc">Version: 1.0</div>
+    <div class="app-desc">BasePath:/AndresSierra/TicketSupportAPI/1.0</div>
+    <div class="license-info">All rights reserved</div>
+    <div class="license-url">http://apache.org/licenses/LICENSE-2.0.html</div>
+  <h2>Access</h2>
+
+  <h2><a name="__Methods">Methods</a></h2>
+  [ Jump to <a href="#__Models">Models</a> ]
+
+  <h3>Table of Contents </h3>
+  <div class="method-summary"></div>
+  <h4><a href="#Default">Default</a></h4>
+  <ul>
+  <li><a href="#allTicketsGet"><code><span class="http-method">get</span> /all_tickets</code></a></li>
+  <li><a href="#allUserGet"><code><span class="http-method">get</span> /all_user</code></a></li>
+  <li><a href="#createTicketPost"><code><span class="http-method">post</span> /create_ticket</code></a></li>
+  <li><a href="#createUserPost"><code><span class="http-method">post</span> /create_user</code></a></li>
+  <li><a href="#deleteTicketDelete"><code><span class="http-method">delete</span> /delete_ticket</code></a></li>
+  <li><a href="#deleteUserDelete"><code><span class="http-method">delete</span> /delete_user</code></a></li>
+  <li><a href="#getUserGet"><code><span class="http-method">get</span> /get_user</code></a></li>
+  <li><a href="#loginPost"><code><span class="http-method">post</span> /login</code></a></li>
+  <li><a href="#oneTicketGet"><code><span class="http-method">get</span> /one_ticket</code></a></li>
+  <li><a href="#profileGet"><code><span class="http-method">get</span> /profile</code></a></li>
+  <li><a href="#ticketsByUserGet"><code><span class="http-method">get</span> /ticketsByUser</code></a></li>
+  <li><a href="#updateTicketPut"><code><span class="http-method">put</span> /update_ticket</code></a></li>
+  <li><a href="#updateUserPut"><code><span class="http-method">put</span> /update_user</code></a></li>
+  </ul>
+
+  <h1><a name="Default">Default</a></h1>
+  <div class="method"><a name="allTicketsGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /all_tickets</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">allTicketsGet</span>)</div>
+    <div class="method-notes">Retorna todos los tickets almacenados en la base de datos.</div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#inline_response_200_7">inline_response_200_7</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "data" : {
+    "ticket1" : "data",
+    "ticket2" : "data"
+  },
+  "auth" : true,
+  "message" : "Now take your results!"
+}, {
+  "data" : {
+    "ticket1" : "data",
+    "ticket2" : "data"
+  },
+  "auth" : true,
+  "message" : "Now take your results!"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Mostrar los tickets en formato JSON.
+        
+    <h4 class="field-label">400</h4>
+    La API falló
+        
+    <h4 class="field-label">401</h4>
+    No existe token de inicio de sesión
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="allUserGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /all_user</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">allUserGet</span>)</div>
+    <div class="method-notes">Retorna todos los usuarios almacenados en la base de datos.</div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#inline_response_200_2">inline_response_200_2</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "data" : {
+    "user1" : "data",
+    "user2" : "data"
+  },
+  "auth" : true,
+  "message" : "Now take your results!"
+}, {
+  "data" : {
+    "user1" : "data",
+    "user2" : "data"
+  },
+  "auth" : true,
+  "message" : "Now take your results!"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Mostrar usuarios en formato JSON.
+        
+    <h4 class="field-label">400</h4>
+    La API falló
+        
+    <h4 class="field-label">401</h4>
+    No existe token de inicio de sesión
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="createTicketPost"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /create_ticket</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">createTicketPost</span>)</div>
+    <div class="method-notes">Permite registrar un nuevo ticket en la base de datos.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">id_user (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Nombre del usuario que generó el ticket </div>      <div class="param">ticket_desc (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Descripción de la apertura del ticket. </div>      <div class="param">created_at (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Fecha de creación. format: date</div>      <div class="param">time_duration (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Duración del ticket en minutos. </div>      <div class="param">closed_at (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Fecha de cierre. format: date</div>      <div class="param">state_ticket (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; El estado del ticket, valor por defecto false. </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#inline_response_200_8">inline_response_200_8</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "data" : {
+    "ticket1" : "data"
+  },
+  "message" : "Your ticket was created!"
+}, {
+  "data" : {
+    "ticket1" : "data"
+  },
+  "message" : "Your ticket was created!"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Se creo el usuario en la base de datos
+        
+    <h4 class="field-label">400</h4>
+    La API falló
+        
+    <h4 class="field-label">401</h4>
+    No existe token de inicio de sesión
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="createUserPost"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /create_user</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">createUserPost</span>)</div>
+    <div class="method-notes">Permite insertar un nuevo usuario en la base de datos.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">name_user (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Nombre del usuario </div>      <div class="param">email_user (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Correo eléctronico del usuario </div>      <div class="param">pass_user (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Contraseña del usuario. </div>      <div class="param">type_user (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Tipo de usuario, puede ser admin, tech o client </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#inline_response_200_3">inline_response_200_3</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "data" : {
+    "user1" : "data"
+  },
+  "message" : "Your user was created!"
+}, {
+  "data" : {
+    "user1" : "data"
+  },
+  "message" : "Your user was created!"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Se creo el usuario en la base de datos
+        
+    <h4 class="field-label">400</h4>
+    La API falló
+        
+    <h4 class="field-label">401</h4>
+    No existe token de inicio de sesión
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="deleteTicketDelete"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /delete_ticket</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">deleteTicketDelete</span>)</div>
+    <div class="method-notes">Elimina un ticket de la base de datos usando un id.</div>
+
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">idticket (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Identificador unico del ticket asignado en la base de datos </div>    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#inline_response_200_11">inline_response_200_11</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "message" : "Ticket deleted!"
+}, {
+  "message" : "Ticket deleted!"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Se eliminó el ticket especificado.
+        
+    <h4 class="field-label">400</h4>
+    La API falló
+        
+    <h4 class="field-label">401</h4>
+    No existe token de inicio de sesión
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="deleteUserDelete"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="delete"><code class="huge"><span class="http-method">delete</span> /delete_user</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">deleteUserDelete</span>)</div>
+    <div class="method-notes">Elimina un usuario de la base de datos usando un id.</div>
+
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">iduser (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Identificador unico del usuario asignado en la base de datos </div>    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#inline_response_200_5">inline_response_200_5</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "message" : "The User was deleted!"
+}, {
+  "message" : "The User was deleted!"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Se eliminó el usuario especificado.
+        
+    <h4 class="field-label">400</h4>
+    La API falló
+        
+    <h4 class="field-label">401</h4>
+    No existe token de inicio de sesión
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="getUserGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /get_user</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">getUserGet</span>)</div>
+    <div class="method-notes">Retorna un solo usuario de la base de datos usando un id.</div>
+
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">iduser (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Identificador unico del usuario asignado en la base de datos </div>    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#inline_response_200_4">inline_response_200_4</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "data" : {
+    "user1" : "data"
+  },
+  "message" : "The User you find is: "
+}, {
+  "data" : {
+    "user1" : "data"
+  },
+  "message" : "The User you find is: "
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Retornó un usuario.
+        
+    <h4 class="field-label">400</h4>
+    La API falló
+        
+    <h4 class="field-label">401</h4>
+    No existe token de inicio de sesión
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="loginPost"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="post"><code class="huge"><span class="http-method">post</span> /login</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">loginPost</span>)</div>
+    <div class="method-notes">Permite hacer un inicio de sesión en el sistema y generar el token del usuario</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">email_user (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Correo eléctronico del usuario </div>      <div class="param">pass_user (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Contraseña del usuario. </div>    </div>  <!-- field-items -->
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#inline_response_200">inline_response_200</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "auth" : true,
+  "message" : "The user now is in our system!",
+  "token" : "a68a98a87lkfdhd.1345335454"
+}, {
+  "auth" : true,
+  "message" : "The user now is in our system!",
+  "token" : "a68a98a87lkfdhd.1345335454"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Inicio de sesión exitoso
+        
+    <h4 class="field-label">400</h4>
+    Datos de sesión erroneos.
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="oneTicketGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /one_ticket</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">oneTicketGet</span>)</div>
+    <div class="method-notes">Retorna un solo ticket de la base de datos usando un id.</div>
+
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">idticket (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Identificador unico del ticket asignado en la base de datos </div>    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#inline_response_200_10">inline_response_200_10</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "data" : {
+    "ticket1" : "data"
+  },
+  "message" : "The Ticket was found"
+}, {
+  "data" : {
+    "ticket1" : "data"
+  },
+  "message" : "The Ticket was found"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Retornó un ticket.
+        
+    <h4 class="field-label">400</h4>
+    La API falló
+        
+    <h4 class="field-label">401</h4>
+    No existe token de inicio de sesión
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="profileGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /profile</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">profileGet</span>)</div>
+    <div class="method-notes">Retorna toda la información del usuario que inicio sesión.</div>
+
+
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#inline_response_200_1">inline_response_200_1</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "data" : {
+    "id_user" : 1,
+    "name_user" : "admin",
+    "email_user" : "admin@myapp.com",
+    "pass_user" : "Abc123",
+    "state_user" : true,
+    "token" : "eyJhbGciOiJIUzI1NiIsIn...",
+    "type_user" : "admin"
+  },
+  "auth" : true,
+  "message" : "The User logged in the system is..."
+}, {
+  "data" : {
+    "id_user" : 1,
+    "name_user" : "admin",
+    "email_user" : "admin@myapp.com",
+    "pass_user" : "Abc123",
+    "state_user" : true,
+    "token" : "eyJhbGciOiJIUzI1NiIsIn...",
+    "type_user" : "admin"
+  },
+  "auth" : true,
+  "message" : "The User logged in the system is..."
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Muestra el usuario que inicio sesión.
+        
+    <h4 class="field-label">400</h4>
+    La API falló
+        
+    <h4 class="field-label">401</h4>
+    No existe token de inicio de sesión
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="ticketsByUserGet"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /ticketsByUser</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">ticketsByUserGet</span>)</div>
+    <div class="method-notes">Retorna todos los tickets de la base de datos asignados a un tecnico.</div>
+
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">iduser (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Identificador unico del tecnico asignado en la base de datos </div>    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#inline_response_200_9">inline_response_200_9</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "data" : {
+    "ticket1" : {
+      "id_user" : 1
+    },
+    "ticket2" : {
+      "id_user" : 1
+    }
+  },
+  "message" : "Get list of tickets..."
+}, {
+  "data" : {
+    "ticket1" : {
+      "id_user" : 1
+    },
+    "ticket2" : {
+      "id_user" : 1
+    }
+  },
+  "message" : "Get list of tickets..."
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Retorna los tickets del usuario especificado.
+        
+    <h4 class="field-label">400</h4>
+    El id solicitado no tiene tickets asignados
+        
+    <h4 class="field-label">401</h4>
+    No existe token de inicio de sesión
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="updateTicketPut"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /update_ticket</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">updateTicketPut</span>)</div>
+    <div class="method-notes">Actualiza la información de un ticket de la base de datos usando un id.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">id_user (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Nombre del usuario que generó el ticket </div>      <div class="param">ticket_desc (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Descripción de la apertura del ticket. </div>      <div class="param">created_at (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Fecha de creación. format: date</div>      <div class="param">time_duration (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Duración del ticket en minutos. </div>      <div class="param">closed_at (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Fecha de cierre. format: date</div>      <div class="param">state_ticket (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; El estado del ticket, valor por defecto false. </div>      <div class="param">assigned_to (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Identificador del técnico al cual fue asignado el ticket. </div>    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">idticket (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Identificador unico del ticket asignado en la base de datos </div>    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#inline_response_200_12">inline_response_200_12</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "message" : "The ticket was edited!"
+}, {
+  "message" : "The ticket was edited!"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Se actualizó el ticket especificado.
+        
+    <h4 class="field-label">400</h4>
+    La API falló
+        
+    <h4 class="field-label">401</h4>
+    No existe token de inicio de sesión
+        
+  </div> <!-- method -->
+  <hr/>
+  <div class="method"><a name="updateUserPut"></a>
+    <div class="method-path">
+    <a class="up" href="#__Methods">Up</a>
+    <pre class="put"><code class="huge"><span class="http-method">put</span> /update_user</code></pre></div>
+    <div class="method-summary"> (<span class="nickname">updateUserPut</span>)</div>
+    <div class="method-notes">Actualiza la información de un usuario de la base de datos usando un id.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">name_user (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Nombre del usuario </div>      <div class="param">email_user (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Correo eléctronico del usuario </div>      <div class="param">pass_user (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Contraseña del usuario. </div>      <div class="param">state_user (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Si el usuario esta activo o no </div>      <div class="param">type_user (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Tipo de usuario, puede ser admin, tech o client </div>    </div>  <!-- field-items -->
+
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">iduser (required)</div>
+      
+            <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Identificador unico del usuario asignado en la base de datos </div>    </div>  <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      array[<a href="#inline_response_200_6">inline_response_200_6</a>]
+      
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>[ {
+  "message" : "The User was updated!"
+}, {
+  "message" : "The User was updated!"
+} ]</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Se actualizó el usuario especificado.
+        
+    <h4 class="field-label">400</h4>
+    La API falló
+        
+    <h4 class="field-label">401</h4>
+    No existe token de inicio de sesión
+        
+  </div> <!-- method -->
+  <hr/>
+
+  <h2><a name="__Models">Models</a></h2>
+  [ Jump to <a href="#__Methods">Methods</a> ]
+
+  <h3>Table of Contents</h3>
+  <ol>
+    <li><a href="#inline_response_200"><code>inline_response_200</code></a></li>
+    <li><a href="#inline_response_200_1"><code>inline_response_200_1</code></a></li>
+    <li><a href="#inline_response_200_10"><code>inline_response_200_10</code></a></li>
+    <li><a href="#inline_response_200_11"><code>inline_response_200_11</code></a></li>
+    <li><a href="#inline_response_200_12"><code>inline_response_200_12</code></a></li>
+    <li><a href="#inline_response_200_2"><code>inline_response_200_2</code></a></li>
+    <li><a href="#inline_response_200_3"><code>inline_response_200_3</code></a></li>
+    <li><a href="#inline_response_200_4"><code>inline_response_200_4</code></a></li>
+    <li><a href="#inline_response_200_5"><code>inline_response_200_5</code></a></li>
+    <li><a href="#inline_response_200_6"><code>inline_response_200_6</code></a></li>
+    <li><a href="#inline_response_200_7"><code>inline_response_200_7</code></a></li>
+    <li><a href="#inline_response_200_8"><code>inline_response_200_8</code></a></li>
+    <li><a href="#inline_response_200_9"><code>inline_response_200_9</code></a></li>
+    <li><a href="#inline_response_400"><code>inline_response_400</code></a></li>
+    <li><a href="#inline_response_400_1"><code>inline_response_400_1</code></a></li>
+    <li><a href="#inline_response_400_2"><code>inline_response_400_2</code></a></li>
+    <li><a href="#inline_response_401"><code>inline_response_401</code></a></li>
+    <li><a href="#inline_response_401_1"><code>inline_response_401_1</code></a></li>
+  </ol>
+
+  <div class="model">
+    <h3><a name="inline_response_200"><code>inline_response_200</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">auth (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: true</span></div>
+<div class="param">message (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: The user now is in our system!</span></div>
+<div class="param">token (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: a68a98a87lkfdhd.1345335454</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_200_1"><code>inline_response_200_1</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">auth (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: true</span></div>
+<div class="param">message (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: The User logged in the system is...</span></div>
+<div class="param">data (optional)</div><div class="param-desc"><span class="param-type"><a href="#array">List</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: {&quot;id_user&quot;:1,&quot;name_user&quot;:&quot;admin&quot;,&quot;email_user&quot;:&quot;admin@myapp.com&quot;,&quot;pass_user&quot;:&quot;Abc123&quot;,&quot;state_user&quot;:true,&quot;token&quot;:&quot;eyJhbGciOiJIUzI1NiIsIn...&quot;,&quot;type_user&quot;:&quot;admin&quot;}</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_200_10"><code>inline_response_200_10</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">message (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: The Ticket was found</span></div>
+<div class="param">data (optional)</div><div class="param-desc"><span class="param-type"><a href="#array">List</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: {&quot;ticket1&quot;:&quot;data&quot;}</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_200_11"><code>inline_response_200_11</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">message (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: Ticket deleted!</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_200_12"><code>inline_response_200_12</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">message (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: The ticket was edited!</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_200_2"><code>inline_response_200_2</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">auth (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: true</span></div>
+<div class="param">message (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: Now take your results!</span></div>
+<div class="param">data (optional)</div><div class="param-desc"><span class="param-type"><a href="#array">List</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: {&quot;user1&quot;:&quot;data&quot;,&quot;user2&quot;:&quot;data&quot;}</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_200_3"><code>inline_response_200_3</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">message (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: Your user was created!</span></div>
+<div class="param">data (optional)</div><div class="param-desc"><span class="param-type"><a href="#array">List</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: {&quot;user1&quot;:&quot;data&quot;}</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_200_4"><code>inline_response_200_4</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">message (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: The User you find is: </span></div>
+<div class="param">data (optional)</div><div class="param-desc"><span class="param-type"><a href="#array">List</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: {&quot;user1&quot;:&quot;data&quot;}</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_200_5"><code>inline_response_200_5</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">message (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: The User was deleted!</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_200_6"><code>inline_response_200_6</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">message (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: The User was updated!</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_200_7"><code>inline_response_200_7</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">auth (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: true</span></div>
+<div class="param">message (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: Now take your results!</span></div>
+<div class="param">data (optional)</div><div class="param-desc"><span class="param-type"><a href="#array">List</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: {&quot;ticket1&quot;:&quot;data&quot;,&quot;ticket2&quot;:&quot;data&quot;}</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_200_8"><code>inline_response_200_8</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">message (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: Your ticket was created!</span></div>
+<div class="param">data (optional)</div><div class="param-desc"><span class="param-type"><a href="#array">List</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: {&quot;ticket1&quot;:&quot;data&quot;}</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_200_9"><code>inline_response_200_9</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">message (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: Get list of tickets...</span></div>
+<div class="param">data (optional)</div><div class="param-desc"><span class="param-type"><a href="#array">List</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: {&quot;ticket1&quot;:{&quot;id_user&quot;:1},&quot;ticket2&quot;:{&quot;id_user&quot;:1}}</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_400"><code>inline_response_400</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">auth (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: false</span></div>
+<div class="param">message (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: The username or password are wrong!</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_400_1"><code>inline_response_400_1</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">message (optional)</div><div class="param-desc"><span class="param-type"><a href="#array">List</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: Something failed: APP Error</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_400_2"><code>inline_response_400_2</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">message (optional)</div><div class="param-desc"><span class="param-type"><a href="#array">List</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: The user hasn&#x27;t tickets assigned to!</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_401"><code>inline_response_401</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">auth (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: false</span></div>
+<div class="param">message (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: The user is not logged in to execute this action!</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="inline_response_401_1"><code>inline_response_401_1</code></a> <a class="up" href="#__Models">Up</a></h3>
+    
+    <div class="field-items">
+      <div class="param">auth (optional)</div><div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: false</span></div>
+<div class="param">message (optional)</div><div class="param-desc"><span class="param-type"><a href="#string">String</a></span>  </div>
+          <div class="param-desc"><span class="param-type">example: You don&#x27;t have permission for this action!</span></div>
+    </div>  <!-- field-items -->
+  </div>
+  </body>
+</html>

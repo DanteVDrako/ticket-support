@@ -23,6 +23,9 @@ const TICKET = connection.define('tickets',{
     },
     state_ticket:{
         type: Sequelize.BOOLEAN
+    },
+    assigned_to:{
+        type: Sequelize.TEXT 
     }
 },{
     timestamps: false 
