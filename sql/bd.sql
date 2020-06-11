@@ -19,11 +19,11 @@ CREATE TABLE IF NOT EXISTS tickets(
     assigned_to text
 );
 
-INSERT INTO users (name_user, email_user, pass_user, state_user) 
-            VALUES ('admin','admin@myapp.com','Abc123',TRUE,NULL,'admin');
+INSERT INTO users (name_user, email_user, pass_user, state_user,token,type_user) 
+            VALUES ('admin','admin@myapp.com','Abc123',TRUE,'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF91c2VyIjoiYWRtaW5AbXlhcHAuY29tIiwiaWF0IjoxNTkxNzQzMjQyLCJleHAiOjE1OTE4Mjk2NDJ9.YHo5nEE_oqJrbAFuCVfjh5q8PBg7lJeG2JJhnOhKSBU','admin');
 
 INSERT INTO users (name_user, email_user, pass_user, state_user) 
-            VALUES ('user1','user1@myapp.com','4ser1',TRUE, NULL,'tech');
+            VALUES ('user1','user1@myapp.com','4ser1',TRUE, 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbF91c2VyIjoidXNlcjFAbXlhcHAuY29tIiwiaWF0IjoxNTkxNzQ1ODc5LCJleHAiOjE1OTE4MzIyNzl9.8TVpQ1H_pHSmbGhlwXbdGn_CyPMrIKu-jynR69IWfzM','tech');
 
 INSERT INTO users (name_user, email_user, pass_user, state_user) 
             VALUES ('user2','user2@myapp.com','4ser2',TRUE),NULL,'tech';
